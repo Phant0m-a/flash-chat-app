@@ -12,6 +12,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   final _firestore = Firestore.instance;
+
   FirebaseUser loggedUser;
   String message;
   @override
@@ -20,6 +21,24 @@ class _ChatScreenState extends State<ChatScreen> {
     getCurrentUser();
   }
 
+  //Get method
+  void getMessages() async {
+    var messages = await _firestore.collection('messages').getDocuments();
+    for (var message in messages.documents) {
+      print(message.data);
+    }
+  }
+
+  //Get QuerySnapshotstream
+  void getSnapshotStream() async {
+    await for (var snapshots in _firestore.collection('messages').snapshots()) {
+      for (var message in snapshots.documents) {
+        print(message.data);
+      }
+    }
+  }
+
+  // Get currentUser
   void getCurrentUser() async {
     final user = await _auth.currentUser();
     try {
@@ -54,6 +73,24 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // StreamBuilder<QuerySnapshot>(
+            //     stream: _firestore.collection('messages').snapshots(),
+            //     builder: (context, snapshot) {
+            //       if (snapshot.hasData) {
+            //         final messages = snapshot.data.documents;
+            //         List<Text> messageWidgets = [];
+            //         for (message in messages) {
+            //           final messageText = message.data['text'];
+            //           final sender = message.data['sender'];
+            //           final messageWidget = Text('$messageText from $sender');
+            //           messageWidgets.add(messageWidget);
+            //         }
+            //         return Column(
+            //           children: messageWidgets,
+            //         );
+            //       }
+            //     }),
+
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
