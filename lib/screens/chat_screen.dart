@@ -79,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
             //       if (snapshot.hasData) {
             //         final messages = snapshot.data.documents;
             //         List<Text> messageWidgets = [];
-            //         for (message in messages) {
+            //         for (var message in messages) {
             //           final messageText = message.data['text'];
             //           final sender = message.data['sender'];
             //           final messageWidget = Text('$messageText from $sender');
@@ -90,7 +90,35 @@ class _ChatScreenState extends State<ChatScreen> {
             //         );
             //       }
             //     }),
-
+            //re written
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore.collection('messages').snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: Colors.deepPurple,
+                  ));
+                }
+                final messages = snapshot.data.documents;
+                List<Widget> messageWidgets = [];
+                for (var message in messages) {
+                  final sender = message.data['sender'];
+                  final messageText = message.data['text'];
+                  final messageWidget =
+                      BubbleMessage(sender: sender, text: messageText);
+                  messageWidgets.add(messageWidget);
+                }
+                return Expanded(
+                    child: ListView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 20.0,
+                  ),
+                  children: messageWidgets,
+                ));
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -122,6 +150,40 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class BubbleMessage extends StatelessWidget {
+  BubbleMessage({this.text, this.sender});
+  final String text, sender;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Text(
+            sender,
+            style: TextStyle(fontSize: 10.0, color: Colors.black38),
+          ),
+          Material(
+              borderRadius: BorderRadius.circular(30.0),
+              elevation: 5.0,
+              color: Colors.blueAccent,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ))
+        ],
       ),
     );
   }
