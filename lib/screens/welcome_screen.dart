@@ -52,9 +52,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   text: ['Flash Chat'],
                   // style: TextStyle(
                   textStyle: TextStyle(
-                      fontSize: 45.0,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.grey),
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w900,
+                    // color: Colors.grey
+                    color: Colors.deepPurpleAccent,
+                  ),
                 ),
               ],
             ),
@@ -65,7 +67,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               padding: EdgeInsets.symmetric(vertical: 16.0),
               child: Material(
                 elevation: 5.0,
-                color: Colors.lightBlueAccent,
+                // color: Colors.lightBlueAccent,
+                color: Colors.deepPurpleAccent,
                 borderRadius: BorderRadius.circular(30.0),
                 child: MaterialButton(
                   onPressed: () {
