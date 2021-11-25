@@ -26,11 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 200.0,
-                  child: Image.asset('images/logo.png'),
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
                 ),
               ),
               SizedBox(
@@ -47,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 decoration: InputDecoration(
                   hintText: 'Enter your email',
+                  hintStyle: TextStyle(color: Colors.black54),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   border: OutlineInputBorder(
@@ -54,12 +57,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+                        // BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+                        BorderSide(color: Colors.deepPurpleAccent, width: 1.0),
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+                        // BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+                        BorderSide(color: Colors.deepPurpleAccent, width: 1.0),
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
                   ),
                 ),
@@ -68,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 8.0,
               ),
               TextField(
+                obscureText: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
@@ -78,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 decoration: InputDecoration(
                   hintText: 'Enter your password.',
+                  hintStyle: TextStyle(color: Colors.black54),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   border: OutlineInputBorder(
@@ -85,12 +92,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+                        // BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+                        BorderSide(color: Colors.deepPurpleAccent, width: 1.0),
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                        BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+                        // BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+                        BorderSide(color: Colors.deepPurpleAccent, width: 1.0),
                     borderRadius: BorderRadius.all(Radius.circular(32.0)),
                   ),
                 ),
@@ -101,7 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Material(
-                  color: Colors.lightBlueAccent,
+                  // color: Colors.lightBlueAccent,
+                  color: Colors.deepPurpleAccent,
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   elevation: 5.0,
                   child: MaterialButton(
