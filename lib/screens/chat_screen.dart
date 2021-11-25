@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = Firestore.instance;
+FirebaseUser loggedUser;
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -15,7 +16,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   final textController = TextEditingController();
 
-  FirebaseUser loggedUser;
   String message;
   @override
   void initState() {
@@ -68,7 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
         ],
         title: Text('⚡️Chat'),
-        backgroundColor: Colors.lightBlueAccent,
+        // backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: SafeArea(
         child: Column(
@@ -144,17 +145,22 @@ class streamBuilder extends StatelessWidget {
             backgroundColor: Colors.deepPurple,
           ));
         }
-        final messages = snapshot.data.documents;
+        final messages = snapshot.data.documents.reversed;
         List<Widget> messageWidgets = [];
         for (var message in messages) {
           final sender = message.data['Sender'];
           final messageText = message.data['Text'];
-          final messageWidget =
-              BubbleMessage(sender: sender, text: messageText);
+          final currentUser = loggedUser.email;
+
+          // if (currentUser == sender)
+
+          final messageWidget = BubbleMessage(
+              sender: sender, text: messageText, isMe: currentUser == sender);
           messageWidgets.add(messageWidget);
         }
         return Expanded(
             child: ListView(
+          reverse: true,
           padding: EdgeInsets.symmetric(
             horizontal: 10.0,
             vertical: 20.0,
@@ -167,30 +173,38 @@ class streamBuilder extends StatelessWidget {
 }
 
 class BubbleMessage extends StatelessWidget {
-  BubbleMessage({this.text, this.sender});
+  BubbleMessage({this.text, this.sender, this.isMe});
   final String text, sender;
+  final bool isMe;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             sender,
-            style: TextStyle(fontSize: 10.0, color: Colors.black38),
+            style: TextStyle(fontSize: 10.0, color: Colors.white70),
           ),
           Material(
-              borderRadius: BorderRadius.circular(30.0),
+              // borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.only(
+                topLeft: isMe ? Radius.circular(30.0) : Radius.circular(0.0),
+                topRight: isMe ? Radius.circular(0.0) : Radius.circular(30.0),
+                bottomLeft: Radius.circular(30.0),
+                bottomRight: Radius.circular(30.0),
+              ),
               elevation: 5.0,
-              color: Colors.blueAccent,
+              color: isMe ? Colors.deepPurpleAccent : Colors.white,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
                 child: Text(
                   text,
                   style: TextStyle(
                     fontSize: 15.0,
-                    color: Colors.white,
+                    color: isMe ? Colors.white : Colors.black54,
                   ),
                 ),
               ))
